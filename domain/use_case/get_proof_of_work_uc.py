@@ -1,6 +1,6 @@
-from .pow_use_case import PoWUseCase
+from .proof_of_work_use_case import ProofOfWorkUseCase
 
-class GetProofOfWorkUC(PoWUseCase):
+class GetProofOfWorkUC(ProofOfWorkUseCase):
     def execute(self, params):
         new_proof = 1
         check_proof = False

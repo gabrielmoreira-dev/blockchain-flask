@@ -1,8 +1,7 @@
 import hashlib
-from abc import abstractmethod
 from .use_case import UseCase
 
-class PoWUseCase(UseCase):
+class ProofOfWorkUseCase(UseCase):
     _puzzle_rule = '0000'
 
     def generate_hash(self, proof, previous_proof):
