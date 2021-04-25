@@ -3,12 +3,15 @@ import hashlib
 import json
 from flask import Flask, jsonify
 from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUC, GetProofOfWorkUCParams
+from domain.use_case.get_hash_uc import GetHashUC, GetHashUCParams
+from domain.model.block import Block
 
 
 class Blockchain:
     def __init__(self):
         self.chain = []
         self.get_proof_of_work_uc = GetProofOfWorkUC()
+        self.get_hash_uc = GetHashUC()
         self.create_block(proof=1, previous_hash='0')
 
     def create_block(self, proof, previous_hash):
@@ -33,8 +36,14 @@ class Blockchain:
         return hashlib.sha256(operation.encode()).hexdigest()
 
     def generate_block_hash(self, block):
-        encoded_block = json.dumps(block, sort_keys=True).encode()
-        return hashlib.sha256(encoded_block).hexdigest()
+        new_block = Block(
+            index=block['index'], 
+            timestamp=block['timestamp'], 
+            proof=block['proof'], 
+            previous_hash=block['previous_hash']
+        )
+        params = GetHashUCParams(new_block)
+        return self.get_hash_uc.execute(params)
 
     def verify_chain_is_valid(self, chain):
         previous_block = chain[0]
