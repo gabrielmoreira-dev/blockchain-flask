@@ -2,11 +2,15 @@ import datetime
 import hashlib
 import json
 from flask import Flask, jsonify
+from domain.use_case.create_block_uc import CreateBlockUC
+from lib.data.repository.blockchain_repository import BlockchainRepository
 
 
 class Blockchain:
     def __init__(self):
         self.chain = []
+        self.blockchain_repository = BlockchainRepository()
+        self.create_block_uc = CreateBlockUC(blockchain_repository = self.blockchain_repository)
         self.create_block(proof=1, previous_hash='0')
 
     def create_block(self, proof, previous_hash):
