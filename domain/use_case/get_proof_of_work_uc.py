@@ -5,7 +5,7 @@ class GetProofOfWorkUC(ProofOfWorkUseCase):
         new_proof = 1
         check_proof = False
         while check_proof is False:
-            generated_hash = self.generate_hash(new_proof, params.previous_proof)
+            generated_hash = self.generate_proof_hash(new_proof, params.previous_proof)
             hash_resolves_puzzle = self.verify_hash(generated_hash)
             if hash_resolves_puzzle:
                 check_proof = True

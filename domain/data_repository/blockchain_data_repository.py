@@ -14,5 +14,5 @@ class BlockchainDataRepository(ABC):
         pass
 
     @abstractmethod
-    def get_blockchain(self):
+    def get_chain(self):
         pass

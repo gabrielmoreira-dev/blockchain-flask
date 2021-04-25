@@ -13,5 +13,5 @@ class BlockchainRepository(BlockchainDataRepository):
     def get_last_block(self):
         return self.chain[-1]
 
-    def get_blockchain(self):
+    def get_chain(self):
         return self.chain
