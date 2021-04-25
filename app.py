@@ -27,9 +27,7 @@ class Blockchain:
         check_proof = False
         while check_proof is False:
             hash_operation = self.generate_proof_hash(
-                proof=new_proof,
-                previous_proof=previous_proof
-            )
+                new_proof, previous_proof)
             if hash_operation[:4] == '0000':
                 check_proof = True
             else:
@@ -53,12 +51,52 @@ class Blockchain:
                 return False
             previous_proof = previous_block['proof']
             proof = block['proof']
-            hash_operation = self.generate_proof_hash(
-                proof=proof,
-                previous_proof=previous_proof,
-            )
+            hash_operation = self.generate_proof_hash(proof, previous_proof)
             if hash_operation[:4] != '0000':
                 return False
             previous_block = block
             index += 1
         return True
+
+
+app = Flask(__name__)
+blockchain = Blockchain()
+
+
+@app.route('/mine-block', methods=['GET'])
+def mine_block():
+    previous_block = blockchain.get_previous_block()
+    previous_proof = previous_block['proof']
+    proof = blockchain.get_proof_of_work(previous_proof)
+    previous_hash = blockchain.generate_block_hash(previous_block)
+    block = blockchain.create_block(proof, previous_hash)
+    response = {
+        'message': 'Congratulations, you just mined a block!',
+        'index': block['index'],
+        'timestamp': block['timestamp'],
+        'proof': block['proof'],
+        'previous_hash': block['previous_hash']
+    }
+    return jsonify(response), 200
+
+
+@app.route('/chain', methods=['GET'])
+def get_blockchain():
+    response = {
+        'chain': blockchain.chain,
+        'length': len(blockchain.chain)
+    }
+    return jsonify(response), 200
+
+
+@app.route('/is-valid', methods=['GET'])
+def verify_chain_is_valid():
+    is_valid = blockchain.verify_chain_is_valid(blockchain.chain)
+    message = 'The blockchain is valid' if is_valid else 'The blockchain is not valid'
+    response = {
+        'message': message
+    }
+    return jsonify(response), 200
+
+
+app.run(host='0.0.0.0', port=5000)
