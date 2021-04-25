@@ -2,15 +2,13 @@ import datetime
 import hashlib
 import json
 from flask import Flask, jsonify
-from domain.use_case.create_block_uc import CreateBlockUC
-from lib.data.repository.blockchain_repository import BlockchainRepository
+from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUC, GetProofOfWorkUCParams
 
 
 class Blockchain:
     def __init__(self):
         self.chain = []
-        self.blockchain_repository = BlockchainRepository()
-        self.create_block_uc = CreateBlockUC(blockchain_repository = self.blockchain_repository)
+        self.get_proof_of_work_uc = GetProofOfWorkUC()
         self.create_block(proof=1, previous_hash='0')
 
     def create_block(self, proof, previous_hash):
@@ -27,16 +25,8 @@ class Blockchain:
         return self.chain[-1]
 
     def get_proof_of_work(self, previous_proof):
-        new_proof = 1
-        check_proof = False
-        while check_proof is False:
-            hash_operation = self.generate_proof_hash(
-                new_proof, previous_proof)
-            if hash_operation[:4] == '0000':
-                check_proof = True
-            else:
-                new_proof += 1
-        return new_proof
+        params = GetProofOfWorkUCParams(previous_proof)
+        return self.get_proof_of_work_uc.execute(params)
 
     def generate_proof_hash(self, proof, previous_proof):
         operation = str(proof**2 - previous_proof**2)
