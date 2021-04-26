@@ -1,5 +1,4 @@
-from .cryptographic_hash_use_case import CryptographicHashUseCase
-from .proof_of_work_use_case import ProofOfWorkUseCase
+from . import CryptographicHashUseCase, ProofOfWorkUseCase
 
 
 class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):

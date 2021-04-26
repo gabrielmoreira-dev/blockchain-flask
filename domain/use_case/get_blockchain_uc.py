@@ -1,4 +1,4 @@
-from .use_case import UseCase
+from . import UseCase
 from domain.model.blockchain import Blockchain
 
 

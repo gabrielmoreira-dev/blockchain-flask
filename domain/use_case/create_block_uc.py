@@ -1,5 +1,5 @@
 import datetime
-from .use_case import UseCase
+from . import UseCase
 from domain.model.block import Block
 
 

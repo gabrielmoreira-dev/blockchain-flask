@@ -11,6 +11,7 @@ from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUC, GetProofOfWor
 from domain.use_case.validate_chain_uc import ValidateChainUC, ValidateChainUCParams
 
 app = Flask(__name__)
+
 blockchain_repository = BlockchainRepository()
 create_block_uc = CreateBlockUC(blockchain_repository)
 get_blockchain_uc = GetBlockchainUC(blockchain_repository)

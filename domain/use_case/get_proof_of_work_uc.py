@@ -1,4 +1,4 @@
-from .proof_of_work_use_case import ProofOfWorkUseCase
+from . import ProofOfWorkUseCase
 
 
 class GetProofOfWorkUC(ProofOfWorkUseCase):

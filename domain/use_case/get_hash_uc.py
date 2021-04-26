@@ -1,4 +1,4 @@
-from .cryptographic_hash_use_case import CryptographicHashUseCase
+from . import CryptographicHashUseCase
 
 
 class GetHashUC(CryptographicHashUseCase):

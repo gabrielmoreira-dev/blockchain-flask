@@ -1,4 +1,4 @@
-from .use_case import UseCase
+from . import UseCase
 
 
 class GetPreviousBlockUC(UseCase):
