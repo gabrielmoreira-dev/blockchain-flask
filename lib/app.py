@@ -1,105 +1,51 @@
-import datetime
-import hashlib
-import json
 from flask import Flask, jsonify
-from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUC, GetProofOfWorkUCParams
+from lib.interface.validation.validation_controller import ValidationController
+from lib.interface.mineration.mineration_controller import MinerationController
+from lib.interface.chain.chain_controller import ChainController
+from lib.data.repository.blockchain_repository import BlockchainRepository
+from domain.use_case.create_block_uc import CreateBlockUC, CreateBlockUCParams
+from domain.use_case.get_blockchain_uc import GetBlockchainUC, GetBlockchainUCParams
 from domain.use_case.get_hash_uc import GetHashUC, GetHashUCParams
-from domain.model.block import Block
-
-
-class Blockchain:
-    def __init__(self):
-        self.chain = []
-        self.get_proof_of_work_uc = GetProofOfWorkUC()
-        self.get_hash_uc = GetHashUC()
-        self.create_block(proof=1, previous_hash='0')
-
-    def create_block(self, proof, previous_hash):
-        block = {
-            'index': len(self.chain) + 1,
-            'timestamp': str(datetime.datetime.now()),
-            'proof': proof,
-            'previous_hash': previous_hash
-        }
-        self.chain.append(block)
-        return block
-
-    def get_previous_block(self):
-        return self.chain[-1]
-
-    def get_proof_of_work(self, previous_proof):
-        params = GetProofOfWorkUCParams(previous_proof)
-        return self.get_proof_of_work_uc.execute(params)
-
-    def generate_proof_hash(self, proof, previous_proof):
-        operation = str(proof**2 - previous_proof**2)
-        return hashlib.sha256(operation.encode()).hexdigest()
-
-    def generate_block_hash(self, block):
-        new_block = Block(
-            index=block['index'], 
-            timestamp=block['timestamp'], 
-            proof=block['proof'], 
-            previous_hash=block['previous_hash']
-        )
-        params = GetHashUCParams(new_block)
-        return self.get_hash_uc.execute(params)
-
-    def verify_chain_is_valid(self, chain):
-        previous_block = chain[0]
-        index = 1
-        while index < len(chain):
-            block = chain[index]
-            if block['previous_hash'] != self.generate_block_hash(previous_block):
-                return False
-            previous_proof = previous_block['proof']
-            proof = block['proof']
-            hash_operation = self.generate_proof_hash(proof, previous_proof)
-            if hash_operation[:4] != '0000':
-                return False
-            previous_block = block
-            index += 1
-        return True
-
+from domain.use_case.get_previous_block_uc import GetPreviousBlockUC, GetPreviousBlockUCParams
+from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUC, GetProofOfWorkUCParams
+from domain.use_case.validate_chain_uc import ValidateChainUC, ValidateChainUCParams
 
 app = Flask(__name__)
-blockchain = Blockchain()
+blockchain_repository = BlockchainRepository()
+create_block_uc = CreateBlockUC(blockchain_repository)
+get_blockchain_uc = GetBlockchainUC(blockchain_repository)
+get_hash_uc = GetHashUC()
+get_previous_block_uc = GetPreviousBlockUC(blockchain_repository)
+get_proof_of_work_uc = GetProofOfWorkUC()
+validate_chain_uc = ValidateChainUC(blockchain_repository)
+
+validation_controller = ValidationController(validate_chain_uc)
+mineration_controller = MinerationController(get_previous_block_uc,
+                                             get_proof_of_work_uc, get_hash_uc,
+                                             create_block_uc)
+chain_controller = ChainController(get_blockchain_uc)
+
+params = CreateBlockUCParams(proof=1, previous_hash='0')
+create_block_uc.execute(params)
 
 
 @app.route('/mine-block', methods=['GET'])
 def mine_block():
-    previous_block = blockchain.get_previous_block()
-    previous_proof = previous_block['proof']
-    proof = blockchain.get_proof_of_work(previous_proof)
-    previous_hash = blockchain.generate_block_hash(previous_block)
-    block = blockchain.create_block(proof, previous_hash)
-    response = {
-        'message': 'Congratulations, you just mined a block!',
-        'index': block['index'],
-        'timestamp': block['timestamp'],
-        'proof': block['proof'],
-        'previous_hash': block['previous_hash']
-    }
+    response = mineration_controller.mine_block()
     return jsonify(response), 200
 
 
 @app.route('/chain', methods=['GET'])
 def get_blockchain():
-    response = {
-        'chain': blockchain.chain,
-        'length': len(blockchain.chain)
-    }
+    response = chain_controller.get_chain()
     return jsonify(response), 200
 
 
 @app.route('/is-valid', methods=['GET'])
 def verify_chain_is_valid():
-    is_valid = blockchain.verify_chain_is_valid(blockchain.chain)
-    message = 'The blockchain is valid' if is_valid else 'The blockchain is not valid'
-    response = {
-        'message': message
-    }
+    response = validation_controller.validate_chain()
     return jsonify(response), 200
 
 
-app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(debug=True)

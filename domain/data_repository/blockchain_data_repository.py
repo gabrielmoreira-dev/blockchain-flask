@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BlockchainDataRepository(ABC):
     @abstractmethod
     def insert_block(self, block):
