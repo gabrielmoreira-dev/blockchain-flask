@@ -1,4 +1,8 @@
+from dataclasses import dataclass
+from .block import Block
+
+
+@dataclass
 class Blockchain:
-    def __init__(self, chain, length):
-        self.chain = chain
-        self.length = length
+    chain: [Block]
+    length: int

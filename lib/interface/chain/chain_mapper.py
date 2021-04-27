@@ -1,14 +1,9 @@
+import dataclasses
+
+
 class ChainMapper:
-    def toVM(chain):
+    def toDict(chain):
         blockchain = []
         for block in chain:
-            blockchain.append(ChainMapper._convertBlockToVM(block))
+            blockchain.append(dataclasses.asdict(block))
         return {'chain': blockchain, 'length': len(chain)}
-
-    def _convertBlockToVM(block):
-        return {
-            'index': block.index,
-            'timestamp': block.timestamp,
-            'proof': block.proof,
-            'previous_hash': block.previous_hash
-        }

@@ -1,6 +1,5 @@
 from domain.use_case.create_block_uc import CreateBlockUCParams
 from domain.use_case.get_hash_uc import GetHashUCParams
-from domain.use_case.get_previous_block_uc import GetPreviousBlockUCParams
 from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUCParams
 from .mineration_mapper import MinerationMapper
 
@@ -19,11 +18,10 @@ class MinerationController:
         proof = self._get_proof_of_work(previous_proof)
         previous_hash = self._generate_block_hash(previous_block)
         block = self._create_block(proof, previous_hash)
-        return MinerationMapper.toVM(block)
+        return MinerationMapper.toDict(block)
 
     def _get_previous_block(self):
-        params = GetPreviousBlockUCParams()
-        return self.get_previous_block_uc.execute(params)
+        return self.get_previous_block_uc.execute()
 
     def _get_proof_of_work(self, previous_proof):
         params = GetProofOfWorkUCParams(previous_proof)

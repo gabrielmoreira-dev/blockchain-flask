@@ -5,7 +5,7 @@ class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):
     def __init__(self, blockchain_repository):
         self.blockchain_repository = blockchain_repository
 
-    def execute(self, params):
+    def execute(self):
         chain = self.blockchain_repository.get_chain()
         previous_block = chain[0]
         index = 1
@@ -38,7 +38,3 @@ class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):
             return False
         else:
             return True
-
-
-class ValidateChainUCParams:
-    pass
