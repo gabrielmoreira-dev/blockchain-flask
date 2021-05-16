@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+from domain.model.block import Block
 
 
 class BlockchainDataRepository(ABC):
     @abstractmethod
-    def insert_block(self, block):
+    def insert_block(self, block: Block):
         pass
 
     @abstractmethod

@@ -1,11 +1,12 @@
 from . import CryptographicHashUseCase
-
-
-class GetHashUC(CryptographicHashUseCase):
-    def execute(self, params):
-        return self.generate_block_hash(params.block)
+from domain.model.block import Block
 
 
 class GetHashUCParams:
-    def __init__(self, block):
+    def __init__(self, block: Block):
         self.block = block
+
+
+class GetHashUC(CryptographicHashUseCase):
+    def execute(self, params: GetHashUCParams):
+        return self.generate_block_hash(params.block)

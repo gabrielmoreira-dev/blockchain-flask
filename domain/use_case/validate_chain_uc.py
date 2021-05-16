@@ -1,8 +1,10 @@
 from . import CryptographicHashUseCase, ProofOfWorkUseCase
+from domain.data_repository.blockchain_data_repository import BlockchainDataRepository
+from domain.model.block import Block
 
 
 class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):
-    def __init__(self, blockchain_repository):
+    def __init__(self, blockchain_repository: BlockchainDataRepository):
         self.blockchain_repository = blockchain_repository
 
     def execute(self):
@@ -22,19 +24,17 @@ class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):
             index += 1
         return True
 
-    def validate_hash_link(self, block, previous_block):
+    def validate_hash_link(self, block: Block, previous_block: Block):
         previous_hash = block.previous_hash
-        if block.previous_hash != self.generate_block_hash(previous_block):
+        if previous_hash != self.generate_block_hash(previous_block):
             return False
-        else:
-            return True
+        return True
 
-    def validate_proof_of_work(self, block, previous_block):
+    def validate_proof_of_work(self, block: Block, previous_block: Block):
         previous_proof = previous_block.proof
         proof = block.proof
         generated_hash = self.generate_proof_hash(proof, previous_proof)
         hash_resolves_puzzle = self.validate_hash(generated_hash)
         if hash_resolves_puzzle is False:
             return False
-        else:
-            return True
+        return True
