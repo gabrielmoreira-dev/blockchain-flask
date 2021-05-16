@@ -1,9 +1,10 @@
+from dataclasses import dataclass
 from . import ProofOfWorkUseCase
 
 
+@dataclass
 class GetProofOfWorkUCParams:
-    def __init__(self, previous_proof: str):
-        self.previous_proof = previous_proof
+    previous_proof: str
 
 
 class GetProofOfWorkUC(ProofOfWorkUseCase):

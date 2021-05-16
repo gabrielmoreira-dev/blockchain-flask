@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 from . import CryptographicHashUseCase
 from domain.model.block import Block
 
 
+@dataclass
 class GetHashUCParams:
-    def __init__(self, block: Block):
-        self.block = block
+    block: Block
 
 
 class GetHashUC(CryptographicHashUseCase):

@@ -1,13 +1,17 @@
+from typing import List
+from dataclasses import dataclass
 import datetime
 from . import UseCase
-from domain.model.block import Block
 from domain.data_repository.blockchain_data_repository import BlockchainDataRepository
+from domain.model.block import Block
+from domain.model.transaction import Transaction
 
 
+@dataclass
 class CreateBlockUCParams:
-    def __init__(self, proof: str, previous_hash: str):
-        self.proof = proof
-        self.previous_hash = previous_hash
+    proof: str
+    previous_hash: str
+    transactions: List[Transaction]
 
 
 class CreateBlockUC(UseCase):
@@ -19,6 +23,7 @@ class CreateBlockUC(UseCase):
         block = Block(index=last_index + 1,
                       timestamp=str(datetime.datetime.now()),
                       proof=params.proof,
-                      previous_hash=params.previous_hash)
+                      previous_hash=params.previous_hash,
+                      transactions=params.transactions)
         self.blockchain_repository.insert_block(block)
         return block
