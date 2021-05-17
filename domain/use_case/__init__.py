@@ -23,7 +23,7 @@ class CryptographicHashUseCase(UseCase):
 class ProofOfWorkUseCase(UseCase):
     _puzzle_rule = '0000'
 
-    def generate_proof_hash(self, proof: str, previous_proof: str):
+    def generate_proof_hash(self, proof: int, previous_proof: int):
         operation = str(proof**2 - previous_proof**2)
         return hashlib.sha256(operation.encode()).hexdigest()
 

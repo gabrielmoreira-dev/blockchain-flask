@@ -7,4 +7,4 @@ class ClearTransactionsUC(UseCase):
         self.mempool_data_repository = mempool_data_repository
 
     def execute(self):
-        return self.mempool_data_repository.clear_transactions()
+        self.mempool_data_repository.clear_transactions()

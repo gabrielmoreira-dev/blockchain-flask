@@ -1,3 +1,4 @@
+from typing import List
 from abc import ABC, abstractmethod
 from domain.model.transaction import Transaction
 
@@ -8,7 +9,7 @@ class MempoolDataRepository(ABC):
         pass
 
     @abstractmethod
-    def get_transactions(self):
+    def get_transactions(self) -> List[Transaction]:
         pass
 
     @abstractmethod

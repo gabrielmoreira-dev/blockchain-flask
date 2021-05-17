@@ -1,3 +1,4 @@
+from typing import List
 from abc import ABC, abstractmethod
 from domain.model.block import Block
 
@@ -8,13 +9,13 @@ class BlockchainDataRepository(ABC):
         pass
 
     @abstractmethod
-    def get_last_index(self):
+    def get_last_index(self) -> int:
         pass
 
     @abstractmethod
-    def get_last_block(self):
+    def get_last_block(self) -> Block:
         pass
 
     @abstractmethod
-    def get_chain(self):
+    def get_chain(self) -> List[Block]:
         pass

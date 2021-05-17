@@ -7,6 +7,6 @@ from .transaction import Transaction
 class Block:
     index: str
     timestamp: str
-    proof: str
+    proof: int
     previous_hash: str
     transactions: List[Transaction]

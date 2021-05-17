@@ -19,4 +19,4 @@ class AddTransactionUC(UseCase):
         transaction = Transaction(sender=params.sender,
                                   receiver=params.receiver,
                                   amount=params.amount)
-        return self.mempool_data_repository.insert_transaction(transaction)
+        self.mempool_data_repository.insert_transaction(transaction)

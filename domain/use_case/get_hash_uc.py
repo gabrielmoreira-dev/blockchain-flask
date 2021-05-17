@@ -9,5 +9,5 @@ class GetHashUCParams:
 
 
 class GetHashUC(CryptographicHashUseCase):
-    def execute(self, params: GetHashUCParams):
+    def execute(self, params: GetHashUCParams) -> str:
         return self.generate_block_hash(params.block)

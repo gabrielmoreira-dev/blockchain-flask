@@ -18,7 +18,7 @@ class CreateBlockUC(UseCase):
     def __init__(self, blockchain_repository: BlockchainDataRepository):
         self.blockchain_repository = blockchain_repository
 
-    def execute(self, params: CreateBlockUCParams):
+    def execute(self, params: CreateBlockUCParams) -> Block:
         last_index = self.blockchain_repository.get_last_index()
         block = Block(index=last_index + 1,
                       timestamp=str(datetime.datetime.now()),

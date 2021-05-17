@@ -8,4 +8,4 @@ class ValidationController:
 
     def validate_chain(self):
         is_valid = self.validate_chain_uc.execute()
-        return ValidationMapper.toDict(is_valid=is_valid)
+        return ValidationMapper.toDict(is_valid)

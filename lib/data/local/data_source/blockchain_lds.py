@@ -1,3 +1,4 @@
+from typing import List
 from domain.model.block import Block
 
 
@@ -8,11 +9,11 @@ class BlockchainLDS:
     def insert_block(self, block: Block):
         self.chain.append(block)
 
-    def get_last_index(self):
+    def get_last_index(self) -> int:
         return len(self.chain)
 
-    def get_last_block(self):
+    def get_last_block(self) -> Block:
         return self.chain[-1]
 
-    def get_chain(self):
+    def get_chain(self) -> List[Block]:
         return self.chain

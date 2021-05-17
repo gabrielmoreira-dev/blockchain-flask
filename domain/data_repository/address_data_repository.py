@@ -7,5 +7,5 @@ class AddressDataRepository(ABC):
         pass
 
     @abstractmethod
-    def get_node_address(self):
+    def get_node_address(self) -> str:
         pass

@@ -9,5 +9,5 @@ class AddressRepository(AddressDataRepository):
     def set_node_address(self, address: str):
         self.address_lds.set_node_address(address)
 
-    def get_node_address(self):
+    def get_node_address(self) -> str:
         return self.address_lds.get_node_address()

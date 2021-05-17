@@ -4,11 +4,11 @@ from . import ProofOfWorkUseCase
 
 @dataclass
 class GetProofOfWorkUCParams:
-    previous_proof: str
+    previous_proof: int
 
 
 class GetProofOfWorkUC(ProofOfWorkUseCase):
-    def execute(self, params: GetProofOfWorkUCParams):
+    def execute(self, params: GetProofOfWorkUCParams) -> int:
         new_proof = 1
         check_proof = False
         while check_proof is False:

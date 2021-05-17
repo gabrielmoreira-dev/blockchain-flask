@@ -7,7 +7,7 @@ class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):
     def __init__(self, blockchain_repository: BlockchainDataRepository):
         self.blockchain_repository = blockchain_repository
 
-    def execute(self):
+    def execute(self) -> bool:
         chain = self.blockchain_repository.get_chain()
         previous_block = chain[0]
         index = 1
@@ -24,13 +24,14 @@ class ValidateChainUC(CryptographicHashUseCase, ProofOfWorkUseCase):
             index += 1
         return True
 
-    def validate_hash_link(self, block: Block, previous_block: Block):
+    def validate_hash_link(self, block: Block, previous_block: Block) -> bool:
         previous_hash = block.previous_hash
         if previous_hash != self.generate_block_hash(previous_block):
             return False
         return True
 
-    def validate_proof_of_work(self, block: Block, previous_block: Block):
+    def validate_proof_of_work(self, block: Block,
+                               previous_block: Block) -> bool:
         previous_proof = previous_block.proof
         proof = block.proof
         generated_hash = self.generate_proof_hash(proof, previous_proof)
