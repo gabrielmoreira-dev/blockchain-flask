@@ -11,7 +11,7 @@ from .mineration_controller import MinerationController
 
 
 class MinerationFactory:
-    def makeController():
+    def makeController() -> MinerationController:
         add_transaction_uc = AddTransactionUC(mempool_repository)
         clear_transactions_uc = ClearTransactionsUC(mempool_repository)
         create_block_uc = CreateBlockUC(blockchain_repository)

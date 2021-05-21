@@ -5,7 +5,7 @@ from .transaction_controller import TransactionController
 
 
 class TransactionFactory:
-    def makeController():
+    def makeController() -> TransactionController:
         add_transaction_uc = AddTransactionUC(mempool_repository)
         get_previous_block_uc = GetPreviousBlockUC(blockchain_repository)
         return TransactionController(

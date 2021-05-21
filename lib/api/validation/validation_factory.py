@@ -4,6 +4,6 @@ from .validation_controller import ValidationController
 
 
 class ValidationFactory:
-    def makeController():
+    def makeController() -> ValidationController:
         validate_chain_uc = ValidateChainUC(blockchain_repository)
         return ValidationController(validate_chain_uc)
