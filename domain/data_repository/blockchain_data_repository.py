@@ -1,6 +1,7 @@
-from typing import List
 from abc import ABC, abstractmethod
+from typing import List
 from domain.model.block import Block
+from domain.model.blockchain import Blockchain
 
 
 class BlockchainDataRepository(ABC):
@@ -17,5 +18,13 @@ class BlockchainDataRepository(ABC):
         pass
 
     @abstractmethod
-    def get_chain(self) -> List[Block]:
+    def get_local_blockchain(self) -> Blockchain:
+        pass
+
+    @abstractmethod
+    def set_local_blockchain(self, chain: List[Block]):
+        pass
+
+    @abstractmethod
+    def get_remote_blockchain(self, address: str) -> Blockchain:
         pass

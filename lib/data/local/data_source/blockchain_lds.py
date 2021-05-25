@@ -17,3 +17,6 @@ class BlockchainLDS:
 
     def get_chain(self) -> List[Block]:
         return self.chain
+
+    def set_chain(self, chain: List[Block]):
+        self.chain = chain
