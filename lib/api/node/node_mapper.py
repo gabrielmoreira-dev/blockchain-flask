@@ -9,5 +9,4 @@ class NodeMapper:
         return {'message': message, 'nodes': addresses}
 
     def _get_address(node: Node):
-        print("address ", node.address)
         return node.address
