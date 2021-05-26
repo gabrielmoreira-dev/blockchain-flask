@@ -2,7 +2,7 @@ from domain.model.block import Block
 from domain.use_case.add_transaction_uc import AddTransactionUC, AddTransactionUCParams
 from domain.use_case.create_block_uc import CreateBlockUC, CreateBlockUCParams
 from domain.use_case.get_hash_uc import GetHashUC, GetHashUCParams
-from domain.use_case.get_node_address_uc import GetNodeAddressUC
+from domain.use_case.get_address_uc import GetAddressUC
 from domain.use_case.get_previous_block_uc import GetPreviousBlockUC
 from domain.use_case.get_proof_of_work_uc import GetProofOfWorkUC, GetProofOfWorkUCParams
 from .mineration_mapper import MinerationMapper
@@ -10,12 +10,12 @@ from .mineration_mapper import MinerationMapper
 
 class MinerationController:
     def __init__(self, add_transaction_uc: AddTransactionUC,
-                 get_node_address_uc: GetNodeAddressUC,
+                 get_address_uc: GetAddressUC,
                  get_previous_block_uc: GetPreviousBlockUC,
                  get_proof_of_work_uc: GetProofOfWorkUC,
                  get_hash_uc: GetHashUC, create_block_uc: CreateBlockUC):
         self.add_transaction_uc = add_transaction_uc
-        self.get_node_address_uc = get_node_address_uc
+        self.get_address_uc = get_address_uc
         self.get_previous_block_uc = get_previous_block_uc
         self.get_proof_of_work_uc = get_proof_of_work_uc
         self.get_hash_uc = get_hash_uc
@@ -41,7 +41,7 @@ class MinerationController:
         return self.get_hash_uc.execute(params)
 
     def _get_reward(self):
-        node_address = self.get_node_address_uc.execute()
+        node_address = self.get_address_uc.execute()
         params = AddTransactionUCParams(sender='',
                                         receiver=node_address,
                                         amount=1)
