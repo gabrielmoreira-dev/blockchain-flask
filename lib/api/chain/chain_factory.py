@@ -4,6 +4,6 @@ from .chain_controller import ChainController
 
 
 class ChainFactory:
-    def makeController():
+    def makeController() -> ChainController:
         get_blockchain_uc = GetBlockchainUC(blockchain_repository)
         return ChainController(get_blockchain_uc)
