@@ -6,8 +6,5 @@ class AddressRepository(AddressDataRepository):
     def __init__(self, address_lds: AddressLDS):
         self.address_lds = address_lds
 
-    def set_node_address(self, address: str):
-        self.address_lds.set_node_address(address)
-
-    def get_node_address(self) -> str:
-        return self.address_lds.get_node_address()
+    def get_address(self) -> str:
+        return self.address_lds.get_address()
